@@ -1,5 +1,6 @@
 ﻿
 @using PokemonCards.Models;
+@using PokemonCards.Models.Libs;
 
 @{
     var action = Request.QueryString["action"];
@@ -37,7 +38,7 @@
     {
         actionCompleted = TeamBuilder.TeamPokemonAction(team_id, action, Convert.ToInt32(id));
 
-        if(actionCompleted)
+        if (actionCompleted)
         {
             if (action == "add")
             {
@@ -62,39 +63,39 @@
 
     //Data for page
     List<TeamPokemonModel> teamPoke = TeamBuilder.GetTeam(team_id);
-    List<PokemonModel> allPoke = TeamBuilder.GetPokemon();
+    List<PokemonModel> allPoke = Pokemon.GetPokemon();
 
     ViewBag.Title = "Team Builder";
 }
 
-    <div class="jumbotron bg-secondary text-light">
-        <p class="lead">Create a team of 5 pokemon to battle with. Click on a Pokemon below to add them to your team.</p>
-        <p class="@(actionCompleted?"text-success":"text-warning")">@message</p>
-        <hr />
-        <!-- Pokemon Team -->
-        <h4 align="center">Your Team</h4>
-        <div class="row">
-            @foreach (var n in teamPoke)
-            {
-                <div class="col">
-                    <div class="card text-dark">
-                        <img src="@n.pokemon.GetDisplayImage()" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">@n.pokemon.name</h5>
-                            <p class="card-text">
-                                Weight: @n.pokemon.weight
-                                <br>
-                                Health Points: @n.pokemon.hp
-                                <br>
-                                Level: @n.pokemon.level
-                            </p>
-                            <a href="/TeamBuilder/Index?action=remove&id=@n.pokemon.id&team_id=@team_id" class="btn btn-primary">Remove From Team</a>
-                        </div>
+<div class="jumbotron bg-secondary text-light">
+    <p class="lead">Create a team of 5 pokemon to battle with. Click on a Pokemon below to add them to your team.</p>
+    <p class="@(actionCompleted?"text-success":"text-warning")">@message</p>
+    <hr />
+    <!-- Pokemon Team -->
+    <h4 align="center">Your Team</h4>
+    <div class="row">
+        @foreach (var n in teamPoke)
+        {
+            <div class="col">
+                <div class="card text-dark">
+                    <img src="@n.pokemon.GetDisplayImage()" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@n.pokemon.name</h5>
+                        <p class="card-text">
+                            Weight: @n.pokemon.weight
+                            <br>
+                            Health Points: @n.pokemon.hp
+                            <br>
+                            Level: @n.pokemon.level
+                        </p>
+                        <a href="/TeamBuilder/Index?action=remove&id=@n.pokemon.id&team_id=@team_id" class="btn btn-primary">Remove From Team</a>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
+</div>
 
 <!-- All Pokemon -->
 <div class="container-fluid">
