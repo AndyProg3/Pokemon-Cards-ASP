@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
+using PokemonCards.Models.Libs;
 
 namespace PokemonCards.Models
 {
-    public class TeamBuilder
+    public static class TeamBuilder
     {
         /// <summary>
         /// Insert a new team into the Team db
@@ -27,48 +28,6 @@ namespace PokemonCards.Models
                 Database.Close(ref con);
 
                 return val;
-            }
-        }
-
-        /// <summary>
-        /// Gets all Pokemon from database
-        /// If you want to get specific pokemon pass in a list of the ids you want
-        /// </summary>
-        /// <param name="ids">Optional list of Pokemon Ids to get</param>
-        /// <param name="con">Optional param for use if already connected to database</param>
-        /// <returns>List of PokemonModel</returns>
-        public static List<PokemonModel> GetPokemon(List<int> ids = null, SqlConnection con = null)
-        {
-            List<PokemonModel> poke = new List<PokemonModel>();
-            con = Database.GetCon(con);
-
-            string _query = "select * from pokemon ";
-
-            if (ids != null && ids.Count > 0)
-                _query += "where pokemon_id in (@id)";
-
-            using (SqlCommand cmd = new SqlCommand(_query, con))
-            {
-                if (ids != null && ids.Count > 0)
-                    cmd.Parameters.AddWithValue("@id", string.Join(",", ids));
-
-                Database.Open(ref con);
-
-                SqlDataReader nwReader = cmd.ExecuteReader();
-                while (nwReader.Read())
-                {
-                    PokemonModel tmp =
-                        new PokemonModel((int)nwReader["pokemon_id"],
-                            (string)nwReader["name"], (int)nwReader["hp"],
-                            (int)nwReader["weight"], (int)nwReader["level"]);
-
-                    poke.Add(tmp);
-                }
-
-                nwReader.Close();
-                Database.Close(ref con);
-
-                return poke;
             }
         }
 
@@ -103,7 +62,7 @@ namespace PokemonCards.Models
 
                 if (teamIds.Count > 0)
                 {
-                    List<PokemonModel> pokemon = GetPokemon(pokemonIds, con);
+                    List<PokemonModel> pokemon = Pokemon.GetPokemon(pokemonIds, con);
 
                     for (int c = 0; c < pokemon.Count; c++)
                     {
@@ -152,7 +111,7 @@ namespace PokemonCards.Models
             List<int> ids = new List<int>();
             ids.Add(id);
 
-            List<PokemonModel> poke = GetPokemon(ids);
+            List<PokemonModel> poke = Pokemon.GetPokemon(ids);
 
             using (SqlCommand cmd = new SqlCommand("INSERT INTO team_pokemon (team_id, pokemon_id, hp) VALUES (@team, @poke, @hp)", con))
             {

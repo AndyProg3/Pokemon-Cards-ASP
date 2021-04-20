@@ -9,7 +9,8 @@ namespace PokemonCards.Models
     {
         public int id { get; set; }
         public string name { get; set; }
-        
+
+        public List<PokemonImageModel> images { get; set; }
         public int hp { get; set; }
         public int weight { get; set; }
         public int level { get; set; }
@@ -22,6 +23,11 @@ namespace PokemonCards.Models
             this.hp = hp;
             this.weight = weight;
             this.level = level;
+        }
+
+        public string GetDisplayImage()
+        {
+            return images[0].img_location;
         }
     }
 }
