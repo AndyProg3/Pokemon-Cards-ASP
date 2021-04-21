@@ -47,6 +47,7 @@ namespace PokemonCards.Models
                 cmd.Parameters.AddWithValue("@team", team_id);
                 Database.Open(ref con);
 
+                List<int> ptIds = new List<int>();
                 List<int> pokemonIds = new List<int>();
                 List<TeamModel> team = new List<TeamModel>();
                 List<int> hps = new List<int>();
@@ -56,6 +57,7 @@ namespace PokemonCards.Models
                     team.Add(new TeamModel((int)nwReader["team_id"], (string)nwReader["is_comp"]));
                     pokemonIds.Add((int)nwReader["pokemon_id"]);
                     hps.Add((int)nwReader["hp"]);
+                    ptIds.Add((int)nwReader["pt_id"]);
                 }
 
                 nwReader.Close();
@@ -76,6 +78,7 @@ namespace PokemonCards.Models
                         tmp.team = team[c];
                         tmp.pokemon = pokemon[c];
                         tmp.hp = hps[c];
+                        tmp.pt_id = ptIds[c];
 
                         poke.Add(tmp);
                     }
@@ -156,10 +159,10 @@ namespace PokemonCards.Models
         {
             con = Database.GetCon(con);
 
-            using (SqlCommand cmd = new SqlCommand("delete from team_pokemon where team_id = @team and pokemon_id = @poke", con))
+            using (SqlCommand cmd = new SqlCommand("delete from team_pokemon where team_id = @team and pt_id = @id", con))
             {
                 cmd.Parameters.AddWithValue("@team", team_id);
-                cmd.Parameters.AddWithValue("@poke", id);
+                cmd.Parameters.AddWithValue("@id", id);
                 Database.Open(ref con);
 
                 int val = cmd.ExecuteNonQuery();
