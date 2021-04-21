@@ -13,18 +13,18 @@
     //if not create a new team_id
     if (team_id == 0)
     {
-        HttpCookie hc = Request.Cookies["team_id"];
+        HttpCookie hc = Request.Cookies["teams"];
         if (hc != null)
         {
-            team_id = Convert.ToInt32(hc["id"]);
+            team_id = Convert.ToInt32(hc["user_team"]);
         }
         else
         {
             team_id = TeamBuilder.CreateTeam();
-            HttpCookie cookie = new HttpCookie("team_id");
-            cookie["id"] = team_id.ToString();
+            HttpCookie cookie = new HttpCookie("teams");
+            cookie["user_team"] = team_id.ToString();
             cookie.Expires = DateTime.Now.AddMonths(1);
-            Request.Cookies.Add(cookie);
+            Response.Cookies.Add(cookie);
         }
     }
 

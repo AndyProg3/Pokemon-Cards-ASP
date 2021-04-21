@@ -14,13 +14,17 @@ namespace PokemonCards.Models
         /// </summary>
         /// <param name="con">Optional param for use if already connected to database</param>
         /// <returns>The user's Team Id</returns>
-        public static int CreateTeam(SqlConnection con = null)
+        public static int CreateTeam(bool isComp = false, SqlConnection con = null)
         {
             con = Database.GetCon(con);
 
             using (SqlCommand cmd = new SqlCommand("INSERT INTO Team (is_comp) output INSERTED.ID VALUES (@comp)", con))
             {
-                cmd.Parameters.AddWithValue("@comp", 'N');
+                if(isComp)
+                    cmd.Parameters.AddWithValue("@comp", 'Y');
+                else
+                    cmd.Parameters.AddWithValue("@comp", 'N');
+
                 Database.Open(ref con);
 
                 int val = (int)cmd.ExecuteScalar();
@@ -174,6 +178,20 @@ namespace PokemonCards.Models
                 else
                     return "EError removing Pokemon from team.";
             }
+        }
+
+        public static int CreateRandomTeam(bool isComp, SqlConnection con = null)
+        {
+            int teamId = CreateTeam(isComp, con);
+
+            List<PokemonModel> poke = Pokemon.GetPokemon(con: con);
+
+            Random rand = new Random();
+
+            for(int c = 0; c < 5; c++)
+                addTeamPokemon(teamId, poke[rand.Next(0, poke.Count)].id, con);
+
+            return teamId;
         }
     }
 }
