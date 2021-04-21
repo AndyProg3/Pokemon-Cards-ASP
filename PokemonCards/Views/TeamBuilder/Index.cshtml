@@ -29,35 +29,26 @@
     }
 
     string message = "";
-    bool actionCompleted = false;
+    string actionMsg = "";
+    bool error = false;
 
     //If action and id are not null
     //this means we are trying to add/remove
     //a pokemon from the team
     if (action != null && id != null)
     {
-        actionCompleted = TeamBuilder.TeamPokemonAction(team_id, action, Convert.ToInt32(id));
+        actionMsg = TeamBuilder.TeamPokemonAction(team_id, action, Convert.ToInt32(id));
 
-        if (actionCompleted)
+        if (actionMsg[0] == 'E')
         {
-            if (action == "add")
-            {
-                message = "Successfully added.";
-            }
-            else if (action == "remove")
-            {
-                message = "Successfully removed.";
-            }
-            else
-            {
-                message = "Error processing request.";
-            }
+            error = true;
         }
         else
         {
-            message = "Error processing request.";
+            error = false;
         }
 
+        message = actionMsg.Substring(1);
     }
 
 
@@ -68,55 +59,84 @@
     ViewBag.Title = "Team Builder";
 }
 
-<div class="jumbotron bg-secondary text-light">
+<div class="jumbotron text-dark">
+    <h1>Pokemon Cards</h1>
     <p class="lead">Create a team of 5 pokemon to battle with. Click on a Pokemon below to add them to your team.</p>
-    <p class="@(actionCompleted?"text-success":"text-warning")">@message</p>
-    <hr />
+    
+    @if (message != "")
+    {
+        <div class="alert @(error ? "alert-danger" : "alert-success")">@message</div>
+    }
+
+    <hr class="border-color-black"/>
+
     <!-- Pokemon Team -->
     <h4 align="center">Your Team</h4>
     <div class="row">
-        @foreach (var n in teamPoke)
+        @if (teamPoke.Count <= 0)
         {
-            <div class="col">
+            @:<p class="col">0 Pokemon on your team</p>
+         }
+
+            @foreach (var n in teamPoke)
+            {
                 <div class="card text-dark">
-                    <img src="~/Content/@n.pokemon.GetDisplayImage()" class="card-img-top" alt="...">
+                    <img src="~/Content/@n.pokemon.GetDisplayImage()" class="card-img-top" alt="@n.pokemon.name">
                     <div class="card-body">
-                        <h5 class="card-title">@n.pokemon.name</h5>
-                        <p class="card-text">
+                        <h4 class="card-title mb-0">@n.pokemon.name</h4>
+
+                        @foreach (var t in n.pokemon.types)
+                        {
+                            <small class="text-muted mb-2">
+                                @t
+                            </small>
+                        }
+
+                        <p class="card-text mt-2">
                             Weight: @n.pokemon.weight
                             <br>
                             Health Points: @n.pokemon.hp
                             <br>
                             Level: @n.pokemon.level
                         </p>
-                        <a href="/TeamBuilder/Index?action=remove&id=@n.pokemon.id&team_id=@team_id" class="btn btn-primary">Remove From Team</a>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/TeamBuilder/Index?action=remove&id=@n.pokemon.id&team_id=@team_id" style="margin: auto 0;" class="btn w-100 btn-primary">Remove From Team</a>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
 </div>
-
 <!-- All Pokemon -->
-<div class="container-fluid">
-    <h3>Pokemon</h3>
-    <div class="row">
+<div class="container">
+
+    <hr class="border-color-white"/>
+    <h3 class="text-light">Pokemon</h3>
+    <div class="card-deck">
         @foreach (var n in allPoke)
         {
-            <div class="col">
-                <div class="card text-dark">
-                    <img src="~/Content/@n.GetDisplayImage()" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">@n.name</h5>
-                        <p class="card-text">
-                            Weight: @n.weight
-                            <br>
-                            Health Points: @n.hp
-                            <br>
-                            Level: @n.level
-                        </p>
-                        <a href="/TeamBuilder/Index?action=add&id=@n.id&team_id=@team_id" class="btn btn-primary">Add To Team</a>
-                    </div>
+            <div class="card text-dark">
+                <img src="~/Content/@n.GetDisplayImage()" class="card-img-top" alt="@n.name">
+                <div class="card-body">
+                    <h4 class="card-title mb-0">@n.name</h4>
+
+                    @foreach (var t in n.types)
+                    {
+                        <small class="text-muted mb-2">
+                            @t
+                        </small>
+                    }
+
+                    <p class="card-text mt-2">
+                        Weight: @n.weight
+                        <br>
+                        Health Points: @n.hp
+                        <br>
+                        Level: @n.level
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="/TeamBuilder/Index?action=add&id=@n.id&team_id=@team_id" style="margin: auto 0;" class="btn w-100 btn-primary">Add To Team</a>
                 </div>
             </div>
         }

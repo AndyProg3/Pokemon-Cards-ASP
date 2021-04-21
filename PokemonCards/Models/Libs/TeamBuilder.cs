@@ -53,7 +53,7 @@ namespace PokemonCards.Models
                 SqlDataReader nwReader = cmd.ExecuteReader();
                 while (nwReader.Read())
                 {
-                    team.Add(new TeamModel((int)nwReader["team_id"], (char)nwReader["is_comp"]));
+                    team.Add(new TeamModel((int)nwReader["team_id"], (string)nwReader["is_comp"]));
                     pokemonIds.Add((int)nwReader["pokemon_id"]);
                     hps.Add((int)nwReader["hp"]);
                 }
@@ -62,7 +62,13 @@ namespace PokemonCards.Models
 
                 if (team.Count > 0)
                 {
-                    List<PokemonModel> pokemon = Pokemon.GetPokemon(pokemonIds, con);
+                    List<PokemonModel> pokemon = new List<PokemonModel>();
+
+                    foreach (int id in pokemonIds) {
+                        List<int> i = new List<int>();
+                        i.Add(id);
+                        pokemon.Add(Pokemon.GetPokemon(i, con)[0]);
+                    }
 
                     for (int c = 0; c < pokemon.Count; c++)
                     {
@@ -88,14 +94,14 @@ namespace PokemonCards.Models
         /// <param name="action">The action to take (add || remove)</param>
         /// <param name="id">The Pokemon Id</param>
         /// <returns>True or False value for error output</returns>
-        public static bool TeamPokemonAction(int team_id, string action, int id)
+        public static string TeamPokemonAction(int team_id, string action, int id)
         {
             if (action == "add")
                 return addTeamPokemon(team_id, id);
             else if (action == "remove")
                 return removeTeamPokemon(team_id, id);
 
-            return false;
+            return "EAction undefined.";
         }
 
         /// <summary>
@@ -105,8 +111,15 @@ namespace PokemonCards.Models
         /// <param name="id">The Pokemon Id</param>
         /// <param name="con">Optional param for use if already connected to database</param>
         /// <returns>A true or false value for error output</returns>
-        private static bool addTeamPokemon(int team_id, int id, SqlConnection con = null)
+        private static string addTeamPokemon(int team_id, int id, SqlConnection con = null)
         {
+            //Check to see if team already has 5 pokemon
+            //If so send error message back
+            if (GetTeam(team_id, con).Count() >= 5)
+            {
+                return "EYour team is full.";
+            }
+
             con = Database.GetCon(con);
             List<int> ids = new List<int>();
             ids.Add(id);
@@ -125,9 +138,9 @@ namespace PokemonCards.Models
                 Database.Close(ref con);
 
                 if (val > 0)
-                    return true;
+                    return "SSuccessfully added.";
                 else
-                    return false;
+                    return "EError adding Pokemon to team.";
             }
         }
 
@@ -139,7 +152,7 @@ namespace PokemonCards.Models
         /// <param name="id">The Pokemon Id</param>
         /// <param name="con">Optional param for use if already connected to database</param>
         /// <returns>A true or false value for error output</returns>
-        private static bool removeTeamPokemon(int team_id, int id, SqlConnection con = null)
+        private static string removeTeamPokemon(int team_id, int id, SqlConnection con = null)
         {
             con = Database.GetCon(con);
 
@@ -154,9 +167,9 @@ namespace PokemonCards.Models
                 Database.Close(ref con);
 
                 if (val > 0)
-                    return true;
+                    return "SSuccessfully removed.";
                 else
-                    return false;
+                    return "EError removing Pokemon from team.";
             }
         }
     }

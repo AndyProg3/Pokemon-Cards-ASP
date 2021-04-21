@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System    ;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -21,17 +21,21 @@ namespace PokemonCards.Models.Libs
             List<PokemonModel> poke = new List<PokemonModel>();
             con = Database.GetCon(con);
 
-            string _query = "select * from pokemon ";
+            string _query = "select *, " +
+                            "(select t2.name from pokemon_types pt2 join types t2 on pt2.type_id = t2.type_id where pt2.[order] = 1 and pt2.pokemon_id = p.pokemon_id) type1, " +
+                            "(select t2.name from pokemon_types pt2 join types t2 on pt2.type_id = t2.type_id where pt2.[order] = 2 and pt2.pokemon_id = p.pokemon_id) type2" +
+                            " from pokemon p ";
 
             if (ids != null && ids.Count > 0)
-                _query += "where pokemon_id in (@id)";
+                _query += "where p.pokemon_id in (@id)";
 
             using (SqlCommand cmd = new SqlCommand(_query, con))
             {
-                if (ids != null && ids.Count > 0)
+                if (ids != null && ids.Count > 0) 
                     cmd.Parameters.AddWithValue("@id", string.Join(",", ids));
 
                 Database.Open(ref con);
+
 
                 SqlDataReader nwReader = cmd.ExecuteReader();
                 while (nwReader.Read())
@@ -40,6 +44,13 @@ namespace PokemonCards.Models.Libs
                         new PokemonModel((int)nwReader["pokemon_id"],
                             (string)nwReader["name"], (int)nwReader["hp"],
                             (int)nwReader["weight"], (int)nwReader["level"]);
+
+                    tmp.types = new List<string>();
+                    if(nwReader["type1"] != DBNull.Value)
+                        tmp.types.Add((string)nwReader["type1"]);
+
+                    if(nwReader["type2"] != DBNull.Value)
+                        tmp.types.Add((string)nwReader["type2"]);
 
                     poke.Add(tmp);
                 }

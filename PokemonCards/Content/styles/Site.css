@@ -2,9 +2,20 @@
     --nav-height: 65px;
 }
 
+body {
+    background-color: rgb(36, 104, 177);
+}
+
 nav {
     height: var(--nav-height);
     margin-bottom: 1em;
+    background-color: rgb(36, 104, 177);
+    border-bottom: 2px solid black;
+}
+
+.jumbotron {
+    background-color: rgb(252, 207, 0);
+    padding-top: 1em;
 }
 
 .body-content {
@@ -13,4 +24,18 @@ nav {
 
 .card {
     margin: 1em;
+    min-width: 20vw;
+}
+
+img {
+    object-fit: contain;
+    height: 50%;
+}
+
+.border-color-white {
+    border-color: white;
+}
+
+.border-color-black {
+    border-color: black;
 }

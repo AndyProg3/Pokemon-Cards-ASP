@@ -11,6 +11,8 @@ namespace PokemonCards.Models
         public string name { get; set; }
 
         public List<PokemonImageModel> images { get; set; }
+
+        public List<string> types { get; set; }
         public int hp { get; set; }
         public int weight { get; set; }
         public int level { get; set; }
