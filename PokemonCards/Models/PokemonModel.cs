@@ -27,7 +27,10 @@ namespace PokemonCards.Models
 
         public string GetDisplayImage()
         {
-            return images[0].img_location;
+            if(images.Count > 0)
+                return images[0].img_location;
+
+            return "";
         }
     }
 }

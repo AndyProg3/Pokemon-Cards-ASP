@@ -7,7 +7,7 @@ namespace PokemonCards.Models
 {
     public class TeamPokemonModel
     {
-        public int team_id { get; set; }
+        public TeamModel team { get; set; }
         public PokemonModel pokemon { get; set; }
         public int hp { get; set; }
     }

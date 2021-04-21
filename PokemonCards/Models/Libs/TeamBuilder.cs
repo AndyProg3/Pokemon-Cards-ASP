@@ -42,32 +42,32 @@ namespace PokemonCards.Models
             List<TeamPokemonModel> poke = new List<TeamPokemonModel>();
             con = Database.GetCon(con);
 
-            using (SqlCommand cmd = new SqlCommand("select * from team_pokemon where team_id = @team", con))
+            using (SqlCommand cmd = new SqlCommand("select * from team join team_pokemon on team_pokemon.team_id = team.id where team.id = @team", con))
             {
                 cmd.Parameters.AddWithValue("@team", team_id);
                 Database.Open(ref con);
 
                 List<int> pokemonIds = new List<int>();
-                List<int> teamIds = new List<int>();
+                List<TeamModel> team = new List<TeamModel>();
                 List<int> hps = new List<int>();
                 SqlDataReader nwReader = cmd.ExecuteReader();
                 while (nwReader.Read())
                 {
-                    teamIds.Add((int)nwReader["team_id"]);
+                    team.Add(new TeamModel((int)nwReader["team_id"], (char)nwReader["is_comp"]));
                     pokemonIds.Add((int)nwReader["pokemon_id"]);
                     hps.Add((int)nwReader["hp"]);
                 }
 
                 nwReader.Close();
 
-                if (teamIds.Count > 0)
+                if (team.Count > 0)
                 {
                     List<PokemonModel> pokemon = Pokemon.GetPokemon(pokemonIds, con);
 
                     for (int c = 0; c < pokemon.Count; c++)
                     {
                         TeamPokemonModel tmp = new TeamPokemonModel();
-                        tmp.team_id = teamIds[c];
+                        tmp.team = team[c];
                         tmp.pokemon = pokemon[c];
                         tmp.hp = hps[c];
 

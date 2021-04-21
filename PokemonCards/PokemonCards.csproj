@@ -139,7 +139,19 @@
     <Content Include="App_Data\Pokemon_log.ldf">
       <DependentUpon>Pokemon.mdf</DependentUpon>
     </Content>
-    <Content Include="Content\images\69561.jpg" />
+    <Content Include="Content\images\blastoise.png" />
+    <Content Include="Content\images\bulbasaur.png" />
+    <Content Include="Content\images\charizard.png" />
+    <Content Include="Content\images\charmandar.png" />
+    <Content Include="Content\images\eeve.png" />
+    <Content Include="Content\images\jigglypuff.png" />
+    <Content Include="Content\images\mew.png" />
+    <Content Include="Content\images\mewtwo.png" />
+    <Content Include="Content\images\pikachu.png" />
+    <Content Include="Content\images\pokemon_logo.png" />
+    <Content Include="Content\images\psyduck.png" />
+    <Content Include="Content\images\snorlax.png" />
+    <Content Include="Content\images\squirtle.png" />
     <Content Include="Content\styles\bootstrap\bootstrap-grid.css" />
     <Content Include="Content\styles\bootstrap\bootstrap-grid.min.css" />
     <Content Include="Content\styles\bootstrap\bootstrap-reboot.css" />

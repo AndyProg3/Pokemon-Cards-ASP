@@ -41,12 +41,16 @@ namespace PokemonCards.Models.Libs
                             (string)nwReader["name"], (int)nwReader["hp"],
                             (int)nwReader["weight"], (int)nwReader["level"]);
 
-                    tmp.images = GetImages(tmp.id, con);
-
                     poke.Add(tmp);
                 }
 
                 nwReader.Close();
+
+                foreach(var tmp in poke)
+                {
+                    tmp.images = GetImages(tmp.id, con);
+                }
+
                 Database.Close(ref con);
 
                 return poke;
@@ -69,7 +73,7 @@ namespace PokemonCards.Models.Libs
                 {
                     PokemonImageModel tmp =
                         new PokemonImageModel((int)nwReader["pi_id"],
-                            (string)nwReader["image_location"], 
+                            (string)nwReader["img_location"], 
                             (int)nwReader["order"]);
 
                     img.Add(tmp);
