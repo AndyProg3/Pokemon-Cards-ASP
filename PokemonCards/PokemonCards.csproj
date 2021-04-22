@@ -125,7 +125,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\FightingLogModel.cs" />
+    <Compile Include="Models\FightingModel.cs" />
     <Compile Include="Models\Libs\Database.cs" />
+    <Compile Include="Models\Libs\Fight.cs" />
     <Compile Include="Models\Libs\Pokemon.cs" />
     <Compile Include="Models\Libs\TeamBuilder.cs" />
     <Compile Include="Models\PokemonImageModel.cs" />

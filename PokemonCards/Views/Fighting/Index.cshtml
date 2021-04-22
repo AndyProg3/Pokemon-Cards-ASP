@@ -1,7 +1,185 @@
-﻿
+﻿@using PokemonCards.Models;
+@using PokemonCards.Models.Libs;
+
 @{
     ViewBag.Title = "Fight";
+
+    var action = Request.QueryString["action"];
+
+    int userId = Request.QueryString["user_id"] == null ? 0 : Convert.ToInt32(Request.QueryString["user_id"]);
+    int compId = Request.QueryString["comp_id"] == null ? 0 : Convert.ToInt32(Request.QueryString["comp_id"]);
+
+    if (action == "createComp")
+    {
+        compId = TeamBuilder.CreateRandomTeam(true);
+        HttpCookie cookie = new HttpCookie("teams");
+        cookie["comp_team"] = userId.ToString();
+        cookie.Expires = DateTime.Now.AddMonths(1);
+        Response.Cookies.Add(cookie);
+
+    }
+
+    //If team_id was not passed through request
+    //Check if the cookie has the team_id
+    //if not create a new team_id
+    if (userId == 0)
+    {
+        HttpCookie hc = Request.Cookies["teams"];
+        if (hc != null)
+        {
+            userId = Convert.ToInt32(hc["user_team"]);
+        }
+    }
+
+    //If team_id was not passed through request
+    //Check if the cookie has the team_id
+    //if not create a new team_id
+    if (compId == 0 && userId != 0)
+    {
+        HttpCookie hc = Request.Cookies["teams"];
+        if (hc != null)
+        {
+            if (hc["comp_team"] != null)
+            {
+                compId = Convert.ToInt32(hc["comp_team"]);
+            }
+            else
+            {
+                //Check fights for a fight with user team id = userId
+                //If not display Create Computer Team button
+                FightingModel tmp = Fight.FindFight(userId);
+                if (tmp != null)
+                {
+                    compId = tmp.id;
+                }
+            }
+        }
+    }
+
+    if (compId != 0)
+    {
+        HttpCookie hc = Request.Cookies["teams"];
+        if (hc != null)
+        {
+            hc["comp_team"] = compId.ToString();
+            Response.Cookies.Add(hc);
+        }
+    }
+
+    //Page data
+    List<TeamPokemonModel> userTeam = TeamBuilder.GetTeam(userId);
+    List<TeamPokemonModel> compTeam = TeamBuilder.GetTeam(compId);
 }
 
-<h2>Index</h2>
+
+    <div class="row">
+        <div class="col">
+            <a id="user-btn" class="btn w-100 btn-primary" data-toggle="collapse" href="#user-team">Your Team</a>
+        </div>
+        <div class="col">
+            <a id="comp-btn" class="btn w-100 btn-primary" data-toggle="collapse" href="#comp-team">Computer's Team</a>
+        </div>
+    </div>
+
+
+
+<div class="container-fluid">
+    <!--User pokemon-->
+    
+    <div class="row collapse" id="user-team">
+        @foreach (var n in userTeam)
+        {
+            <div class="col-sm-3">
+                <div class="card fight-card text-dark">
+                    <img src="~/Content/@n.pokemon.GetDisplayImage()" class="card-img" alt="@n.pokemon.name">
+
+                    <div class="card-img-overlay">
+                        <h5 class="card-title mb-0">@n.pokemon.name</h5>
+
+                        @foreach (var t in n.pokemon.types)
+                        {
+                            <small class="mb-2">
+                                @t
+                            </small>
+                        }
+                        <br />
+                        <small class="card-text mt-2">
+                            HP: @n.pokemon.hp
+                            Level: @n.pokemon.level
+                        </small>
+
+                        @if (n.hp > 0)
+                        {
+                            <a href="..." class="btn w-100 btn-primary">Fight With</a>
+                        }
+                        else
+                        {
+                            <p>Dead</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        <hr />
+    </div>
+
+
+    <!--Computer Pokemon-->
+    <div class="collapse row" id="comp-team">
+        @foreach (var n in compTeam)
+        {
+            <div class="col-sm-3">
+                <div class="card fight-card text-dark">
+                    <img src="~/Content/@n.pokemon.GetDisplayImage()" class="card-img" alt="@n.pokemon.name">
+
+                    <div class="card-img-overlay">
+                        <h5 class="card-title mb-0">@n.pokemon.name</h5>
+
+                        @foreach (var t in n.pokemon.types)
+                        {
+                            <small class="mb-2">
+                                @t
+                            </small>
+                        }
+                        <br />
+                        <small class="card-text mt-2">
+                            HP: @n.pokemon.hp
+                            Level: @n.pokemon.level
+                        </small>
+
+                        @if (n.hp <= 0)
+                        {
+                            <p>Dead</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="jumbotron mt-3 text-dark">
+    <h1>Pokemon Fight!</h1>
+    <p class="lead">Choose an attack or switch out your Pokemon fighter.</p>
+
+    @if (userTeam.Count > 0)
+    {
+        <!--Fighting Pokemon (Computer on top, user on bottom)-->
+        if (compTeam.Count > 0)
+        {
+
+        }
+        else
+        {
+            <!--Create the computer team-->
+            <a href="/Fighting/Index?action=createComp&user_id=@userId" class="btn w-100 btn-primary">Create Computer Team</a>
+        }
+    }
+    else
+    {
+        <p>You do not have a saved team on this computer.</p>
+        <a href="/TeamBuilder/Index" class="btn w-100 btn-primary">Create a Team</a>
+    }
+
+</div>
 

@@ -5,14 +5,16 @@ using System.Web;
 
 namespace PokemonCards.Models
 {
-    public class TeamModel
+    public class FightingLogModel
     {
         public int id { get; set; }
-        public string isComp { get; set; }
+        public string attackMsg { get; set; }
+        public bool isComp { get; set; }
 
-        public TeamModel(int id, string isComp)
+        public FightingLogModel(int id, string attackMsg, bool isComp)
         {
             this.id = id;
+            this.attackMsg = attackMsg;
             this.isComp = isComp;
         }
     }
