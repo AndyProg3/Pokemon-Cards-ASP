@@ -13,6 +13,24 @@ nav {
     border-bottom: 2px solid black;
 }
 
+.navbar-collapse.collapsing,
+.navbar-collapse.show {
+    background-color: rgb(36, 104, 177);
+    border: 1px solid white;
+}
+
+.footer {
+    margin-top: 25px;
+    position: inherit;
+    bottom: 0;
+    width: 100%;
+    height: 45px; /* Set the fixed height of the footer here */
+    line-height: 45px; /* Vertically center the text there */
+    text-align: left;
+    border-top: 2px solid white;
+}
+
+
 .jumbotron {
     background-color: rgb(252, 207, 0);
     padding-top: 1em;

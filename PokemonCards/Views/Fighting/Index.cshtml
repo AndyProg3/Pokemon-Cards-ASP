@@ -176,73 +176,89 @@
         <!--Fighting Pokemon (Computer on top, user on bottom)-->
         if (compTeam.Count > 0)
         {
-<div class="row">
-    <div class="col-auto">
-        <div class="row">
-            <h5>Computer</h5>
-        </div>
-        <div class="row">
-            <img src="~/Content/@fight.comp_pokemon.GetDisplayImage()" class="card-img" alt="@fight.comp_pokemon.name">
-        </div>
-        <div class="row">
-            <h5 class="card-title mb-0">@fight.comp_pokemon.name HP: @fight.comp_pokemon.hp</h5>
-        </div>
-        <div class="row">
+            <div class="row">
+                <div class="col-auto">
+                    <div class="row">
+                        <h5>Computer</h5>
+                    </div>
+                    <div class="row">
+                        <img src="~/Content/@fight.comp_pokemon.GetDisplayImage()" class="card-img" alt="@fight.comp_pokemon.name">
+                    </div>
+                    <div class="row">
+                        <h5 class="card-title mb-0">@fight.comp_pokemon.name HP: @fight.comp_pokemon.hp</h5>
+                    </div>
+                    <div class="row">
 
-            @foreach (var t in fight.comp_pokemon.types)
-            {
-                <small class="mr-1">
-                    @t
-                </small>
-            }
-        </div>
-        <div class="row">
-            <small class="card-text">
-                Level: @fight.comp_pokemon.level
-            </small>
-        </div>
-    </div>
+                        @foreach (var t in fight.comp_pokemon.types)
+                        {
+                            <small class="mr-1">
+                                @t
+                            </small>
+                        }
+                    </div>
+                    <div class="row">
+                        <small class="card-text">
+                            Level: @fight.comp_pokemon.level
+                        </small>
+                    </div>
+                </div>
 
-    <div class="col ml-auto text-left" style="align-self: center;" id="comp-log">
-        <span class="log-text">
-            <!--Attack log-->
-        </span>
-    </div>
-</div>
+                <div class="col ml-auto text-left" style="align-self: center;" id="comp-log">
+                    <span class="log-text">
+                        <!--Attack log-->
+                    </span>
+                </div>
+            </div>
 
-<div class="row">
-    <div class="col mr-auto text-right" style="align-self: center;" id="user-log">
-        <span class="log-text">
-            <!--Attack log-->
-        </span>
-    </div>
+            <div class="row">
+                <div class="col mr-auto text-right" style="align-self: center;" id="user-log">
+                    <span class="log-text">
+                        <!--Attack log-->
+                    </span>
+                </div>
 
-    <div class="col-auto">
-        <div class="row">
-            <h5>User</h5>
-        </div>
-        <div class="row">
-            <img src="~/Content/@fight.user_pokemon.GetDisplayImage()" class="card-img" alt="@fight.user_pokemon.name">
-        </div>
-        <div class="row">
-            <h5 class="card-title mb-0">@fight.user_pokemon.name HP: @fight.user_pokemon.hp</h5>
-        </div>
-        <div class="row">
+                <div class="col-auto">
+                    <div class="row">
+                        <h5>You</h5>
+                    </div>
+                    <div class="row">
+                        <img src="~/Content/@fight.user_pokemon.GetDisplayImage()" class="card-img" alt="@fight.user_pokemon.name">
+                    </div>
+                    <div class="row">
+                        <h5 class="card-title mb-0">@fight.user_pokemon.name HP: @fight.user_pokemon.hp</h5>
+                    </div>
+                    <div class="row">
 
-            @foreach (var t in fight.user_pokemon.types)
-            {
-                <small class="mr-1">
-                    @t
-                </small>
-            }
-        </div>
-        <div class="row">
-            <small class="card-text">
-                Level: @fight.user_pokemon.level
-            </small>
-        </div>
-    </div>
-</div>
+                        @foreach (var t in fight.user_pokemon.types)
+                        {
+                            <small class="mr-1">
+                                @t
+                            </small>
+                        }
+                    </div>
+                    <div class="row">
+                        <small class="card-text">
+                            Level: @fight.user_pokemon.level
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <h6 class="mb-0">Your Attacks:</h6>
+            <div class="row mt-5">
+                <div class="col">
+                    <a class="btn w-100 btn-danger">Tackle</a>
+                </div>
+                <div class="col">
+                    <a class="btn w-100 btn-danger">Vine Whip</a>
+                </div>
+                <div class="col">
+                    <a class="btn w-100 btn-danger">Razor Leaf</a>
+                </div>
+                <div class="col">
+                    <a class="btn w-100 btn-danger">Solar Beam</a>
+                </div>
+            </div>
         }
         else
         {
