@@ -31,6 +31,8 @@
         }
     }
 
+    FightingModel fight = null;
+
     //If team_id was not passed through request
     //Check if the cookie has the team_id
     //if not create a new team_id
@@ -47,16 +49,21 @@
             {
                 //Check fights for a fight with user team id = userId
                 //If not display Create Computer Team button
-                FightingModel tmp = Fight.FindFight(userId);
-                if (tmp != null)
+                fight = Fight.FindFight(userId);
+                if (fight != null)
                 {
-                    compId = tmp.id;
+                    compId = fight.id;
                 }
             }
         }
     }
 
-    if (compId != 0)
+    //Page data
+    List<TeamPokemonModel> userTeam = TeamBuilder.GetTeam(userId);
+    List<TeamPokemonModel> compTeam = TeamBuilder.GetTeam(compId);
+
+
+    if (userTeam.Count > 0 && compTeam.Count > 0)
     {
         HttpCookie hc = Request.Cookies["teams"];
         if (hc != null)
@@ -64,11 +71,13 @@
             hc["comp_team"] = compId.ToString();
             Response.Cookies.Add(hc);
         }
-    }
 
-    //Page data
-    List<TeamPokemonModel> userTeam = TeamBuilder.GetTeam(userId);
-    List<TeamPokemonModel> compTeam = TeamBuilder.GetTeam(compId);
+        //Create fight if not already exists
+        if (fight == null)
+        {
+            fight = Fight.CreateFight(compId, userId, compTeam[0].pokemon.id, userTeam[0].pokemon.id);
+        }
+    }
 }
 
 
@@ -168,6 +177,53 @@
         if (compTeam.Count > 0)
         {
 
+            <div class="row">
+                <div class="col">
+                    <div class="card fight-card text-dark">
+                        <img src="~/Content/@fight.user_pokemon.GetDisplayImage()" class="card-img" alt="@fight.user_pokemon.name">
+
+                        <div class="card-img-overlay">
+                            <h5 class="card-title mb-0">@fight.user_pokemon.name</h5>
+
+                            @foreach (var t in fight.user_pokemon.types)
+                            {
+                                <small class="mb-2">
+                                    @t
+                                </small>
+                            }
+                            <br />
+                            <small class="card-text mt-2">
+                                HP: @fight.user_pokemon.hp
+                                Level: @fight.user_pokemon.level
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card fight-card text-dark">
+                        <img src="~/Content/@fight.comp_pokemon.GetDisplayImage()" class="card-img" alt="@fight.comp_pokemon.name">
+
+                        <div class="card-img-overlay">
+                            <h5 class="card-title mb-0">@fight.comp_pokemon.name</h5>
+
+                            @foreach (var t in fight.comp_pokemon.types)
+                            {
+                                <small class="mb-2">
+                                    @t
+                                </small>
+                            }
+                            <br />
+                            <small class="card-text mt-2">
+                                HP: @fight.comp_pokemon.hp
+                                Level: @fight.comp_pokemon.level
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
         else
         {

@@ -56,7 +56,7 @@ namespace PokemonCards.Models.Libs
             }
         }
 
-        public static int CreateFight(int compTeamId, int userTeamId, int compPokemonId, int userPokemonId, SqlConnection con = null)
+        public static FightingModel CreateFight(int compTeamId, int userTeamId, int compPokemonId, int userPokemonId, SqlConnection con = null)
         {
             con = Database.GetCon(con);
 
@@ -73,7 +73,7 @@ namespace PokemonCards.Models.Libs
 
                 Database.Close(ref con);
 
-                return val;
+                return FindFight(userTeamId, con);
             }
         }
 
