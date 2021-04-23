@@ -63,3 +63,13 @@ img {
 .border-color-black {
     border-color: black;
 }
+
+
+#comp-log, #user-log {
+    min-width: 25vw;
+}
+
+.log-text {
+    margin-right: 1.5em;
+    margin-left: 1.5em;
+}

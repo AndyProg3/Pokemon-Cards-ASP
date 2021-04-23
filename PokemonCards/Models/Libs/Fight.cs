@@ -60,7 +60,7 @@ namespace PokemonCards.Models.Libs
         {
             con = Database.GetCon(con);
 
-            using (SqlCommand cmd = new SqlCommand("INSERT INTO fighting (comp_team_id, user_team_id, comp_pokemon_id, user_pokemon_id) output INSERTED.ID VALUES (@compId, @userId, @compPoke, @userPoke)", con))
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO fighting (comp_team_id, user_team_id, comp_pokemon_id, user_pokemon_id) output INSERTED.FIGHT_ID VALUES (@compId, @userId, @compPoke, @userPoke)", con))
             {
                 cmd.Parameters.AddWithValue("@compId", compTeamId);
                 cmd.Parameters.AddWithValue("@userId", userTeamId);
