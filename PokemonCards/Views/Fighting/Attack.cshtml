@@ -1,0 +1,121 @@
+﻿@using PokemonCards.Models;
+@using PokemonCards.Models.Libs;
+
+@{
+    Layout = null;
+    var fightId = Request.Form["fight"] == null ? 0 : Convert.ToInt32(Request.Form["fight"]);
+
+    FightingModel fight = null;
+    List<PokemonMoveModel> moves = new List<PokemonMoveModel>();
+
+    if (fightId != 0)
+    {
+        fight = Fight.GetFight(Convert.ToInt32(fightId));
+
+        if (fight == null)
+        {
+            var userId = Request.Form["user-id"];
+            fight = Fight.FindFight(Convert.ToInt32(userId));
+        }
+
+        var attack = Request.Form["attack"] == null ? 0 : Convert.ToInt32(Request.Form["attack"]);
+
+        if (attack != 0)
+        {
+            PokemonMoveModel userMove = fight.user_pokemon.FindMove(attack);
+
+            //Calculate attack from the attack id base off comp/user-poke
+            float dmg = (userMove.power * (Pokemon.GetDamageFactor(userMove.type.typeId, fight.comp_pokemon.types[0].typeId) / 100)) * (userMove.accuracy / 100);
+
+            //Insert data into fight log
+            //Calcuate computer attack to user-poke
+            //insert data into fight log
+            //output information into below html
+            //Update team's pokemon HP
+        }
+
+        moves = fight.user_pokemon.Get4RandomMoves();
+    }
+}
+
+
+<input type="hidden" value="@fight.id" id="fight-id" />
+<div class="row">
+    <div class="col-auto">
+        <div class="row">
+            <h5>Computer</h5>
+        </div>
+        <div class="row">
+            <input type="hidden" value="@fight.comp_pokemon.id" id="comp-pokemon-id" />
+            <img src="~/Content/@fight.comp_pokemon.GetDisplayImage()" id="comp-pokemon-img" class="card-img" alt="@fight.comp_pokemon.name">
+        </div>
+        <div class="row">
+            <h5 class="card-title mb-0">@fight.comp_pokemon.name HP: @fight.comp_pokemon.hp</h5>
+        </div>
+        <div class="row">
+
+            @foreach (var t in fight.comp_pokemon.types)
+            {
+                <small class="mr-1">
+                    @t
+                </small>
+            }
+        </div>
+        <div class="row">
+            <small class="card-text">
+                Level: @fight.comp_pokemon.level
+            </small>
+        </div>
+    </div>
+
+    <div class="col ml-auto text-left" style="align-self: center;" id="comp-log">
+        <span class="log-text">
+            <!--Attack log-->
+        </span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col mr-auto text-right" style="align-self: center;" id="user-log">
+        <span class="log-text">
+            <!--Attack log-->
+        </span>
+    </div>
+
+    <div class="col-auto">
+        <div class="row">
+            <h5>You</h5>
+        </div>
+        <div class="row">
+            <input type="hidden" value="@fight.user_pokemon.id" id="user-pokemon-id" />
+            <img src="~/Content/@fight.user_pokemon.GetDisplayImage()" id="user-pokemon-img" alt="@fight.user_pokemon.name">
+        </div>
+        <div class="row">
+            <h5 class="card-title mb-0">@fight.user_pokemon.name HP: @fight.user_pokemon.hp</h5>
+        </div>
+        <div class="row">
+
+            @foreach (var t in fight.user_pokemon.types)
+            {
+                <small class="mr-1">
+                    @t
+                </small>
+            }
+        </div>
+        <div class="row">
+            <small class="card-text">
+                Level: @fight.user_pokemon.level
+            </small>
+        </div>
+    </div>
+</div>
+
+<h6 class="mb-0">Your Attacks:</h6>
+<div class="row mt-5">
+    @foreach (var n in moves)
+    {
+        <div class="col">
+            <a class="btn btn-attack w-100 btn-danger" attack-id="@n.id">@n.name</a>
+        </div>
+    }
+</div>

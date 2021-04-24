@@ -55,6 +55,52 @@ namespace PokemonCards.Models.Libs
                 return null;
             }
         }
+        public static FightingModel GetFight(int fightId, SqlConnection con = null)
+        {
+            con = Database.GetCon(con);
+
+            using (SqlCommand cmd = new SqlCommand("select * from fighting where fight_id = (@fightId)", con))
+            {
+                FightingModel fight;
+                cmd.Parameters.AddWithValue("@fightId", fightId);
+
+                Database.Open(ref con);
+
+                int userTeamId = 0;
+                int compTeamId = 0;
+                List<int> compPoke = new List<int>();
+                List<int> userPoke = new List<int>();
+
+                SqlDataReader nwReader = cmd.ExecuteReader();
+                while (nwReader.Read())
+                {
+                    userTeamId = (int)nwReader["user_team_id"];
+                    compTeamId = (int)nwReader["comp_team_id"];
+                    compPoke.Add((int)nwReader["comp_pokemon_id"]);
+                    userPoke.Add((int)nwReader["user_pokemon_id"]);
+                }
+
+                nwReader.Close();
+
+                if (userTeamId != 0)
+                {
+                    fight = new FightingModel(fightId,
+                        TeamBuilder.GetTeam(compTeamId, con),
+                        TeamBuilder.GetTeam(userTeamId, con));
+
+
+                    fight.comp_pokemon = Pokemon.GetPokemon(compPoke, con)[0];
+                    fight.user_pokemon = Pokemon.GetPokemon(userPoke, con)[0];
+
+                    Database.Close(ref con);
+                    return fight;
+                }
+
+                Database.Close(ref con);
+
+                return null;
+            }
+        }
 
         public static FightingModel CreateFight(int compTeamId, int userTeamId, int compPokemonId, int userPokemonId, SqlConnection con = null)
         {

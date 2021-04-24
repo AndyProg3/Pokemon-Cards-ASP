@@ -133,8 +133,10 @@
     <Compile Include="Models\Libs\TeamBuilder.cs" />
     <Compile Include="Models\PokemonImageModel.cs" />
     <Compile Include="Models\PokemonModel.cs" />
+    <Compile Include="Models\PokemonMoveModel.cs" />
     <Compile Include="Models\TeamModel.cs" />
     <Compile Include="Models\TeamPokemonModel.cs" />
+    <Compile Include="Models\TypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -165,18 +167,19 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\styles\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap.js" />
+    <Content Include="Scripts\bootstrap\bootstrap.min.js" />
+    <None Include="Scripts\jquery\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Fight.js" />
+    <Content Include="Scripts\jquery\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery\jquery.validate.js" />
+    <Content Include="Scripts\jquery\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Site.js" />
     <Content Include="Web.config" />
@@ -192,6 +195,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\TeamBuilder\Index.cshtml" />
     <Content Include="Views\Fighting\Index.cshtml" />
+    <Content Include="Views\Fighting\Attack.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -200,8 +204,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Scripts\jquery\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery\jquery-3.3.1.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

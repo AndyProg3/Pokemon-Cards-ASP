@@ -13,5 +13,11 @@ namespace PokemonCards.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Attack()
+        {
+            return View();
+        }
     }
 }

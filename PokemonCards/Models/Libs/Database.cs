@@ -22,10 +22,13 @@ namespace PokemonCards.Models
                 con.Open();
         }
 
-        public static void Close(ref SqlConnection con)
+        public static void Close(ref SqlConnection con, bool close = true)
         {
-            if (con.State != System.Data.ConnectionState.Open)
-                con.Close();
+            if (close == true)
+            {
+                if (con.State != System.Data.ConnectionState.Open)
+                    con.Close();
+            }
         }
     }
 }
