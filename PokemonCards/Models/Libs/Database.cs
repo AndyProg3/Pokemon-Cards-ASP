@@ -11,7 +11,7 @@ namespace PokemonCards.Models
         public static SqlConnection GetCon(SqlConnection con)
         {
             if(con == null)
-                return new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Andy\Documents\Repos\Pokemon-Cards-ASP\PokemonCards\App_Data\Pokemon.mdf;Integrated Security=True");
+                return new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\thera\source\repos\PokemonCards\PokemonCards\App_Data\Pokemon.mdf;Integrated Security=True");
 
             return con;
         }

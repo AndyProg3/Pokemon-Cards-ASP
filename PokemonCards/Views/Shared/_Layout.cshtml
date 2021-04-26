@@ -27,8 +27,14 @@
     </nav>
     <div class="container-fluid body-content">
         @RenderBody()
-        <footer class="footer text-light">
-            <p>&copy; @DateTime.Now.Year - Andy Powell</p>
+        <footer class="footer text-light" id="footer">
+            <div class="container-fluid">
+                <div class="row align-content-end">
+                    <div class="col">
+                        <p>&copy; @DateTime.Now.Year - Andy Powell</p>
+                    </div>
+                </div>
+            </div>
         </footer>
     </div>
 

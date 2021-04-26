@@ -2,8 +2,14 @@
     --nav-height: 65px;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     background-color: rgb(36, 104, 177);
+    margin-bottom: 55px;
 }
 
 nav {
@@ -35,6 +41,7 @@ nav {
     background-color: rgb(252, 207, 0);
     padding-top: 1em;
 }
+
 
 .body-content {
     margin-top: calc(15px + var(--nav-height));
@@ -104,4 +111,14 @@ img {
     80% {transform: translate(-1px, -1px) rotate(1deg);}
     90% {transform: translate(1px, 2px) rotate(0deg);}
     100% {transform: translate(1px, -2px) rotate(-1deg);}
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 99%;
+    height: 45px;
+    line-height: 45px;
+    text-align: left;
+    border-top: 2px solid white;
 }
